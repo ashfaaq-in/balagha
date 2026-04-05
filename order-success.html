@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed | Balagha</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/balagha_logo.png">
+  <style>
+    .success-container {
+      max-width: 600px;
+      margin: 100px auto;
+      text-align: center;
+      padding: 48px;
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: 0 12px 48px var(--shadow-sm);
+    }
+    .success-icon {
+      width: 80px; height: 80px;
+      background: rgba(158, 173, 150, 0.15); /* sage-light */
+      color: var(--sage);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 32px;
+      animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    .success-icon svg { width: 40px; height: 40px; }
+    
+    .success-title {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--mocha);
+      margin-bottom: 16px;
+    }
+    .success-desc {
+      font-size: 1.1rem;
+      color: var(--mocha-mid);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .order-box {
+      background: var(--cream-dark);
+      padding: 24px;
+      border-radius: 16px;
+      margin-bottom: 32px;
+      border: 1px dashed var(--border);
+    }
+    .order-box-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+    .order-box-row:last-child { margin-bottom: 0; }
+    .order-label { color: var(--mocha-mid); }
+    .order-val { font-weight: 600; color: var(--mocha); }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body style="background: var(--cream);">
+
+  <!-- Navbar Simple -->
+  <nav id="navbar" class="navbar" style="position: absolute; background: transparent; border: none; box-shadow: none;">
+    <div class="container nav-inner" style="justify-content: center;">
+      <a href="index.html" class="nav-logo">
+        <img src="images/balagha_logo.png" alt="Balagha Logo" class="nav-logo-img">
+        <div class="nav-logo-text">Bala<span>gha</span></div>
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="success-container animate-fade-up">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      
+      <h1 class="success-title">Thank You!</h1>
+      <p class="success-desc" id="success-desc">
+        Your order has been placed successfully. We've sent a confirmation email with your order details to your inbox.
+      </p>
+
+      <div class="order-box">
+        <div class="order-box-row">
+          <span class="order-label">Order Number:</span>
+          <span class="order-val" id="order-id">#—</span>
+        </div>
+        <div class="order-box-row">
+          <span class="order-label">Date:</span>
+          <span class="order-val" id="order-date">—</span>
+        </div>
+        <div class="order-box-row">
+          <span class="order-label">Payment:</span>
+          <span class="order-val" id="order-payment">—</span>
+        </div>
+        <div class="order-box-row" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
+          <span class="order-label">Estimated Delivery:</span>
+          <span class="order-val" style="color: var(--sage);">3–5 Business Days</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 16px; justify-content: center;">
+        <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
+        <a href="index.html" class="btn btn-secondary">Return Home</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params  = new URLSearchParams(window.location.search);
+      const orderId = params.get('orderId') || sessionStorage.getItem('balagha_last_order') || '—';
+      const method  = params.get('method') || 'online';
+
+      document.getElementById('order-id').textContent = orderId;
+      document.getElementById('order-date').textContent = new Date().toLocaleDateString('en-IN', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+
+      if (method === 'cod') {
+        document.getElementById('order-payment').textContent = 'Cash on Delivery';
+        document.getElementById('order-payment').style.color = 'var(--gold)';
+        document.getElementById('success-desc').textContent =
+          'Your order has been placed! Pay when your package arrives. A confirmation email has been sent to your inbox.';
+      } else {
+        document.getElementById('order-payment').textContent = '✅ Paid Online';
+        document.getElementById('order-payment').style.color = 'var(--sage)';
+      }
+    });
+  </script>
+</body>
+</html>

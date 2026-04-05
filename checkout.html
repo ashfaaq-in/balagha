@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Balagha</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/balagha_logo.png">
+  <!-- Razorpay Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    body { background: var(--cream); }
+    
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 64px;
+      padding-top: 48px;
+    }
+
+    /* Form Panels */
+    .chk-panel {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 16px var(--shadow-sm);
+    }
+    .chk-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      margin-bottom: 24px;
+      color: var(--mocha);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chk-step-num {
+      width: 28px; height: 28px;
+      background: var(--gold);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-family: var(--font-sans);
+      font-weight: 600;
+    }
+
+    /* Forms */
+    .form-grid { display: grid; gap: 20px; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .input-grp { display: flex; flex-direction: column; gap: 8px; }
+    .chk-label { font-size: 0.9rem; font-weight: 500; color: var(--mocha); }
+    .chk-input, .chk-select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all var(--t-fast);
+      background: var(--bg-mid);
+      color: var(--text-cream);
+    }
+    .chk-input::placeholder { color: var(--mocha-mid); }
+    .chk-select option { background: var(--bg-mid); color: var(--text-cream); }
+    .chk-input:focus, .chk-select:focus {
+      border-color: var(--gold);
+      background: var(--bg-light);
+      box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
+    }
+    .is-invalid {
+      border-color: var(--rose) !important;
+      background: rgba(212,165,165,0.05) !important;
+    }
+
+    /* Payment Methods */
+    .pm-opts { display: flex; flex-direction: column; gap: 12px; }
+    .pm-opt {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all var(--t-fast);
+      background: var(--white);
+    }
+    .pm-opt.active {
+      border-color: var(--gold);
+      background: rgba(196,153,90,0.04);
+    }
+    .pm-opt input {
+      accent-color: var(--gold);
+      width: 18px; height: 18px;
+    }
+    .pm-opt-label { font-weight: 500; color: var(--mocha); flex: 1; }
+    .pm-opt-icons { display: flex; gap: 8px; color: var(--mocha-mid); }
+    .pm-opt-icons svg { width: 24px; height: 24px; }
+    
+    .pm-details {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border);
+      display: none;
+    }
+    .pm-opt.active .pm-details { display: block; }
+
+    /* Order Summary Sidebar */
+    .checkout-sidebar {
+      background: var(--cream-dark);
+      padding: 32px;
+      border-radius: 24px;
+      height: fit-content;
+      position: sticky;
+      top: 32px;
+    }
+    .chk-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .chk-item-img {
+      position: relative;
+      width: 64px; height: 64px;
+      border-radius: 12px;
+      background: var(--white);
+      padding: 4px;
+      border: 1px solid var(--border);
+    }
+    .chk-item-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+    .chk-item-qty {
+      position: absolute;
+      top: -8px; right: -8px;
+      width: 20px; height: 20px;
+      background: var(--mocha);
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chk-item-name { font-weight: 500; font-size: 0.95rem; }
+    .chk-item-size { font-size: 0.8rem; color: var(--mocha-mid); }
+    .chk-item-price { margin-left: auto; font-weight: 600; }
+
+    .chk-summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: var(--mocha-mid);
+    }
+    .chk-total-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--mocha);
+    }
+
+    .error-msg {
+      color: var(--rose);
+      font-size: 0.85rem;
+      margin-top: 4px;
+      display: none;
+    }
+    .is-invalid + .error-msg { display: block; }
+
+    @media (max-width: 900px) {
+      .checkout-layout { grid-template-columns: 1fr; gap: 32px; flex-direction: column-reverse; display: flex; }
+      .chk-panel { padding: 24px 16px; }
+      .row-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Minimal Header for Checkout -->
+  <header style="padding: 24px 0; border-bottom: 1px solid var(--border); background: var(--bg-mid);">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+      <a href="index.html" class="nav-logo">
+        <img src="images/balagha_logo.png" alt="Balagha Logo" class="nav-logo-img">
+        <div class="nav-logo-text">Bala<span>gha</span></div>
+      </a>
+      <a href="cart.html" style="font-size: 0.9rem; font-weight: 500; color: var(--mocha-mid);">Return to Cart</a>
+    </div>
+  </header>
+
+  <main class="container section" style="padding-top: 0;">
+    <form id="checkout-form" class="checkout-layout">
+      
+      <!-- Left: Forms -->
+      <div class="checkout-main">
+        
+        <!-- Contact -->
+        <div class="chk-panel">
+          <h2 class="chk-title"><span class="chk-step-num">1</span> Contact Information</h2>
+          <div class="form-grid">
+            <div class="input-grp">
+              <label class="chk-label">Email Address</label>
+              <input type="email" class="chk-input" id="chk-email" required placeholder="For order updates">
+            </div>
+            <div class="input-grp">
+              <label class="chk-label">Phone Number</label>
+              <input type="tel" class="chk-input" id="chk-phone" required placeholder="+91">
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping -->
+        <div class="chk-panel">
+          <h2 class="chk-title"><span class="chk-step-num">2</span> Shipping Address</h2>
+          <div class="form-grid">
+            <div class="row-2">
+              <div class="input-grp">
+                <label class="chk-label">First Name</label>
+                <input type="text" class="chk-input" id="chk-fname" required>
+              </div>
+              <div class="input-grp">
+                <label class="chk-label">Last Name</label>
+                <input type="text" class="chk-input" id="chk-lname" required>
+              </div>
+            </div>
+            <div class="input-grp">
+              <label class="chk-label">Street Address</label>
+              <input type="text" class="chk-input" id="chk-address" required placeholder="House/Flat No., Building Name, Street">
+            </div>
+            <div class="row-2">
+              <div class="input-grp">
+                <label class="chk-label">City</label>
+                <input type="text" class="chk-input" id="chk-city" required>
+              </div>
+              <div class="input-grp">
+                <label class="chk-label">State</label>
+                <select class="chk-select" id="chk-state" required>
+                  <option value="">Select State</option>
+                  <option value="MH">Maharashtra</option>
+                  <option value="DL">Delhi</option>
+                  <option value="KA">Karnataka</option>
+                  <option value="TN">Tamil Nadu</option>
+                  <option value="TS">Telangana</option>
+                  <option value="UP">Uttar Pradesh</option>
+                  <option value="GJ">Gujarat</option>
+                  <option value="WB">West Bengal</option>
+                  <option value="OT">Other (All India)</option>
+                </select>
+              </div>
+            </div>
+            <div class="row-2">
+              <div class="input-grp">
+                <label class="chk-label">PIN Code</label>
+                <input type="text" class="chk-input" id="chk-pin" required pattern="^[0-9]{6}$" title="6 digit PIN code" placeholder="e.g. 400001">
+              </div>
+              <div class="input-grp">
+                <label class="chk-label">Country</label>
+                <select class="chk-select" disabled>
+                  <option value="IN" selected>India</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div class="chk-panel">
+          <h2 class="chk-title"><span class="chk-step-num">3</span> Payment Method</h2>
+          <p class="mb-16 text-mocha-mid" style="font-size: 0.9rem;">All transactions are secure and encrypted.</p>
+          
+          <div class="pm-opts">
+            <!-- Online (Razorpay) -->
+            <label class="pm-opt active">
+              <input type="radio" name="payment" value="online" checked>
+              <div class="pm-opt-label">Pay Online (UPI / Card / Net Banking)</div>
+              <div class="pm-opt-icons">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              </div>
+              <div class="pm-details" style="width:100%;">
+                <p style="font-size:0.85rem; color:var(--mocha-mid);">Secure payment via Razorpay. UPI, Debit/Credit Cards, and Net Banking accepted.</p>
+              </div>
+            </label>
+
+            <!-- Card -->
+            <label class="pm-opt">
+              <input type="radio" name="payment" value="card">
+              <div class="pm-opt-label">Credit / Debit Card</div>
+              <div class="pm-opt-icons">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              </div>
+              <div class="pm-details" style="width: 100%;">
+                <div class="form-grid">
+                  <div class="input-grp">
+                    <input type="text" class="chk-input" placeholder="Card Number">
+                  </div>
+                  <div class="row-2">
+                    <div class="input-grp"><input type="text" class="chk-input" placeholder="MM/YY"></div>
+                    <div class="input-grp"><input type="text" class="chk-input" placeholder="CVV"></div>
+                  </div>
+                  <div class="input-grp">
+                    <input type="text" class="chk-input" placeholder="Name on Card">
+                  </div>
+                </div>
+              </div>
+            </label>
+
+            <!-- Netbanking -->
+            <label class="pm-opt">
+              <input type="radio" name="payment" value="netbanking">
+              <div class="pm-opt-label">Net Banking</div>
+              <div class="pm-opt-icons">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <div class="pm-details" style="width: 100%;">
+                <select class="chk-select">
+                  <option>Select Bank</option>
+                  <option>HDFC Bank</option>
+                  <option>ICICI Bank</option>
+                  <option>State Bank of India</option>
+                  <option>Kotak Mahindra Bank</option>
+                  <option>Axis Bank</option>
+                </select>
+              </div>
+            </label>
+            <!-- COD -->
+            <label class="pm-opt">
+              <input type="radio" name="payment" value="cod">
+              <div class="pm-opt-label">Cash on Delivery (+₹40 fee)</div>
+              <div class="pm-opt-icons">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+              </div>
+              <div class="pm-details" style="width:100%;">
+                <p style="font-size:0.85rem; color:var(--mocha-mid);">Pay cash when your order arrives. A ₹40 COD handling fee applies.</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Summary -->
+      <div>
+        <div class="checkout-sidebar">
+          <h3 class="chk-title" style="margin-bottom: 24px; font-size: 1.1rem;">Order Summary</h3>
+          
+          <div id="chk-items" style="border-bottom: 1px solid var(--border); padding-bottom: 16px;">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div class="chk-summary-row">
+            <span>Subtotal</span>
+            <span id="chk-sub">₹0</span>
+          </div>
+          <div class="chk-summary-row">
+            <span>Shipping</span>
+            <span id="chk-ship">Calculating...</span>
+          </div>
+          <div class="chk-summary-row" id="chk-cod-row">
+            <span>COD Fee</span>
+            <span id="chk-cod">&mdash;</span>
+          </div>
+          <div class="chk-total-row">
+            <span>Total</span>
+            <span id="chk-total">₹0</span>
+          </div>
+
+          <button type="submit" id="place-order-btn" class="btn btn-primary btn-full btn-lg mt-32">
+            Placed Order (₹<span id="btn-total">0</span>)
+          </button>
+          
+          <p style="font-size: 0.75rem; text-align: center; color: var(--mocha-mid); margin-top: 16px;">
+            By placing your order, you agree to our <a href="terms-of-service.html" style="color: var(--mocha); text-decoration: underline;">Terms of Service</a> and <a href="privacy-policy.html" style="color: var(--mocha); text-decoration: underline;">Privacy Policy</a>. All sales final.
+          </p>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <script src="main.js"></script>
+  <script src="checkout.js"></script>
+</body>
+</html>

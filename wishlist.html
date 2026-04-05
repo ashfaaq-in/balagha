@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Favourites | Balagha</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/balagha_logo.png">
+  <style>
+    .cart-empty {
+      text-align: center;
+      padding: 80px 0;
+    }
+    .cart-empty-icon {
+      width: 80px; height: 80px;
+      background: var(--cream-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--forest);
+      margin: 0 auto 24px;
+    }
+    .cart-empty-icon svg { width: 32px; height: 32px; fill: var(--forest); }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo" id="main-logo">
+        <div class="nav-logo-text">Bala<span>gha</span></div>
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop All</a></li>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="wishlist.html" class="nav-action-btn" aria-label="Favourites">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <span class="wish-badge" style="display:none">0</span>
+        </a>
+        <a href="cart.html" class="nav-action-btn" aria-label="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-badge" style="display:none">0</span>
+        </a>
+        <button id="nav-hamburger" class="nav-hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <nav id="nav-mobile" class="nav-mobile">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop All</a></li>
+      <li><a href="about.html">Our Story</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+
+
+  <!-- Brand Hero -->
+  <section class="brand-hero inner-hero" style="background-image: url('images/about_brand.png');">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-subtitle">Your Favourites</div>
+      <h1 class="hero-title">Wishlist</h1>
+      <div class="hero-breadcrumb">
+        <a href="index.html">Home</a> <span>/</span> <span>Wishlist</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="container section">
+    
+    <div id="wishlist-grid" class="grid-4 animate-fade-up">
+      <!-- Items injected via JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="wishlist-empty" class="cart-empty animate-fade-up" style="display:none;">
+      <div class="cart-empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <h2 style="font-family: var(--font-serif); margin-bottom: 12px; color: var(--forest-dark);">Your wishlist is empty</h2>
+      <p class="text-slate mb-32">Save your favorite pieces here to easily find them later.</p>
+      <a href="shop.html" class="btn btn-primary btn-lg">Explore Collections</a>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-logo">Bala<span>gha</span></div>
+          <p class="footer-tagline">Modest, elegant evening wear and prayer dresses crafted for comfort and confidence. Inspiring you to feel beautiful at home.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Shop</h4>
+          <ul class="footer-links">
+            <li><a href="shop.html">All Products</a></li>
+            <li><a href="shop.html?category=prayer-dresses">Prayer Dresses</a></li>
+            <li><a href="shop.html?category=nighties">Nighties</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Information</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="shipping-returns.html">Shipping & Returns</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="terms-of-service.html">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Contact Us</h4>
+          <div class="footer-contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>hello@balagha.in</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Balagha. All rights reserved.</p>
+        <div class="footer-payments">
+          <span class="pay-badge" aria-label="UPI">
+            <svg class="payment-svg" viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg"><g transform="translate(5,0)"><text x="0" y="42" font-size="34" font-family="Segoe UI, Arial, sans-serif" font-weight="700" fill="#6d6e71">UPI</text><polygon points="78,10 92,32 78,54" fill="#f58220"/><polygon points="88,10 102,32 88,54" fill="#0f9d58"/></g></svg>
+          </span>
+          <span class="pay-badge" aria-label="VISA">
+            <svg class="payment-svg" viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg"><text x="5" y="44" font-size="36" font-family="Arial Black, Arial, sans-serif" font-weight="900" fill="#1a1f71" letter-spacing="2">VISA</text></svg>
+          </span>
+          <span class="pay-badge" aria-label="MasterCard">
+            <svg class="payment-svg" viewBox="0 0 50 32" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="16" r="10" fill="#eb001b"/><circle cx="30" cy="16" r="10" fill="#f79e1b"/></svg>
+          </span>
+          <span class="pay-badge" aria-label="NetBanking">
+            <svg class="payment-svg" viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg"><g fill="#555555"><polygon points="60,12 25,32 95,32"/><rect x="30" y="36" width="10" height="18"/><rect x="55" y="36" width="10" height="18"/><rect x="80" y="36" width="10" height="18"/><rect x="20" y="54" width="80" height="6"/></g></svg>
+          </span>
+        </div>
+      </div>
+      <!-- Owner Signature -->
+      <div class="footer-signature">
+        <span class="footer-signature-text">Designed &amp; built by</span>
+        <span class="footer-signature-dot"></span>
+        <a href="mailto:ashfxk2002@gmail.com" class="footer-signature-link">Ashfaaq</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="shop.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('wishlist-grid');
+      const empty = document.getElementById('wishlist-empty');
+      
+      function renderWishlist() {
+        const savedIds = JSON.parse(localStorage.getItem('balagha_wishlist')) || [];
+        
+        if (savedIds.length === 0) {
+          grid.style.display = 'none';
+          empty.style.display = 'block';
+          return;
+        }
+
+        grid.style.display = '';
+        empty.style.display = 'none';
+
+        // find products
+        const products = savedIds.map(id => window.Shop.getProduct(id)).filter(p => p);
+
+        grid.innerHTML = products.map(p => {
+          let badgeHtml = '';
+          if (p.badge === 'bestseller') badgeHtml = '<span class="product-card-badge badge-bestseller" style="background:var(--forest);">Bestseller</span>';
+          if (p.badge === 'new') badgeHtml = '<span class="product-card-badge badge-new" style="background:var(--forest-light);">New</span>';
+          if (p.badge === 'sale') badgeHtml = '<span class="product-card-badge badge-sale" style="background:var(--rose);">Sale</span>';
+
+          return `
+            <a href="product.html?id=${p.id}" class="product-card" data-product data-product-id="${p.id}" data-name="${p.name}" data-price="${p.price}">
+              <div class="product-card-img">
+                <img src="${p.image}" alt="${p.name}" loading="lazy">
+                ${badgeHtml}
+                <button class="wishlist-btn active" data-wishlist-btn="${p.id}" data-name="${p.name}" aria-label="Remove from wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+              </div>
+              <div class="product-card-body">
+                <div class="product-card-cat">${p.category === 'prayer-dresses' ? 'Prayer Dress' : 'Nightwear'}</div>
+                <h3 class="product-card-name">${p.name}</h3>
+                <div class="product-card-footer">
+                  <div class="product-card-price">
+                    <span class="price-current">₹${p.price.toLocaleString()}</span>
+                  </div>
+                  <button class="card-add-btn" data-quick-add aria-label="Add to cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></button>
+                </div>
+              </div>
+            </a>
+          `;
+        }).join('');
+
+        window.initWishlistButtons();
+        window.initQuickAdd();
+        
+        // Listen to wishlist button clicks specifically on this page to remove items live
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setTimeout(renderWishlist, 100); // re-render after toggle
+            });
+        });
+      }
+
+      // Re-render when wishlist updates
+      const originalSave = window.Wishlist.toggle;
+      window.Wishlist.toggle = (...args) => {
+        const res = originalSave(...args);
+        renderWishlist();
+        return res;
+      };
+
+      renderWishlist();
+    });
+  </script>
+</body>
+</html>

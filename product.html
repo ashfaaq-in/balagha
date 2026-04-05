@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | Balagha</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <style>
+    .product-detail-section { padding: 48px 0; }
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    
+    /* Gallery */
+    .gallery-main {
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--cream-dark);
+      aspect-ratio: 3/4;
+      margin-bottom: 16px;
+    }
+    .gallery-main img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .thumb {
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: 0.6;
+      transition: all var(--t-fast);
+    }
+    .thumb.active { border-color: var(--gold); opacity: 1; }
+    .thumb:hover { opacity: 1; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Info */
+    .product-bc {
+      font-size: 0.85rem;
+      color: var(--mocha-mid);
+      margin-bottom: 16px;
+    }
+    .product-bc a { color: var(--gold); }
+    .product-bc a:hover { text-decoration: underline; }
+    
+    .product-title {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      margin-bottom: 16px;
+      line-height: 1.2;
+      color: var(--mocha);
+    }
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .product-desc {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--mocha-mid);
+      margin-bottom: 32px;
+    }
+
+    /* Size selector */
+    .selector-wrap { margin-bottom: 32px; }
+    .selector-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .size-guide-link {
+      color: var(--gold);
+      text-decoration: underline;
+      font-weight: 500;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .size-opts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .size-opt {
+      width: 52px; height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--t-fast);
+      background: var(--white);
+    }
+    .size-opt.active {
+      border-color: var(--gold);
+      background: var(--gold);
+      color: var(--white);
+    }
+    .size-opt:not(.active):hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Actions */
+    .actions {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .qty-wrap {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      background: var(--white);
+    }
+    .qty-btn {
+      width: 48px; height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--mocha);
+      transition: color var(--t-fast);
+    }
+    .qty-btn:hover { color: var(--gold); }
+    .qty-input {
+      width: 40px;
+      text-align: center;
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      font-weight: 600;
+      pointer-events: none;
+    }
+    .add-to-cart { flex: 1; }
+
+    /* Accordion */
+    .accordion {
+      border-top: 1px solid var(--border);
+    }
+    .accordion-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .accordion-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--mocha);
+      transition: color var(--t-fast);
+    }
+    .accordion-header:hover { color: var(--gold); }
+    .accordion-header svg {
+      width: 20px; height: 20px;
+      transition: transform var(--t-mid);
+    }
+    .accordion-item.active .accordion-header svg { transform: rotate(180deg); }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--t-mid) var(--ease);
+    }
+    .accordion-item.active .accordion-content { max-height: 500px; }
+    .accordion-inner {
+      padding-bottom: 24px;
+      font-size: 0.95rem;
+      color: var(--mocha-mid);
+      line-height: 1.7;
+    }
+    .accordion-inner ul { list-style: disc; padding-left: 20px; margin-top: 12px; }
+    .accordion-inner li { margin-bottom: 6px; }
+
+    @media (max-width: 768px) {
+      .product-grid { grid-template-columns: 1fr; gap: 32px; }
+      .gallery-thumbs { grid-template-columns: repeat(3, 1fr); }
+      .actions { flex-wrap: wrap; }
+      .actions .qty-wrap { flex: 0 0 auto; }
+      .actions .add-to-cart { flex: 1; min-width: 160px; }
+    }
+    @media (max-width: 480px) {
+      .product-detail-section { padding: 32px 0; }
+      .gallery-thumbs { grid-template-columns: repeat(2, 1fr); }
+      .actions { flex-direction: column; }
+      .actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo" id="main-logo">
+        <div class="nav-logo-text">Bala<span>gha</span></div>
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop All</a></li>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="wishlist.html" class="nav-action-btn" aria-label="Favourites">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <span class="wish-badge" style="display:none">0</span>
+        </a>
+        <a href="cart.html" class="nav-action-btn" aria-label="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-badge" style="display:none">0</span>
+        </a>
+        <button id="nav-hamburger" class="nav-hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <nav id="nav-mobile" class="nav-mobile">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop All</a></li>
+      <li><a href="about.html">Our Story</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Product Detail -->
+  <main class="container product-detail-section" style="margin-top: var(--nav-h);">
+    <!-- Breadcrumb will be injected here -->
+    <div id="p-bc" class="product-bc skeleton" style="height: 20px; width: 60%; margin-bottom: 24px;"></div>
+
+    <div class="product-grid" data-product id="main-product" data-product-id="p1">
+      
+      <!-- Gallery -->
+      <div>
+        <div class="gallery-main skeleton">
+          <img id="p-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Loading">
+        </div>
+        <div class="gallery-thumbs" id="p-thumbs">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Detail -->
+      <div>
+        <h1 id="p-title" class="product-title skeleton" style="height: 40px; margin-bottom:16px;"></h1>
+        
+        <div class="product-card-stars mb-16" style="opacity: 0.8;">
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span class="review-count">(24 Reviews)</span>
+        </div>
+
+        <div id="p-price" class="product-price skeleton" style="height: 30px; width: 120px;"></div>
+        
+        <p class="product-desc text-mocha-mid">Experience the perfect blend of modesty and luxury. This meticulously crafted garment offers ultimate comfort without compromising on elegance, making it an essential addition to your daily routine.</p>
+
+        <!-- Size -->
+        <div class="selector-wrap">
+          <div class="selector-top">
+            <span>Size</span>
+            <span class="size-guide-link" id="size-guide-trigger">Size Guide</span>
+          </div>
+          <div class="size-opts" id="p-sizes">
+            <div class="size-opt active">S</div>
+            <div class="size-opt">M</div>
+            <div class="size-opt">L</div>
+            <div class="size-opt">XL</div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions" id="main-actions">
+          <div class="qty-wrap">
+            <button class="qty-btn" id="qty-minus">−</button>
+            <input type="text" class="qty-input" id="qty-val" value="1" readonly>
+            <button class="qty-btn" id="qty-plus">+</button>
+          </div>
+          <button class="btn btn-primary add-to-cart" id="add-btn">Add to Cart</button>
+          <button class="wishlist-btn" id="wish-btn" aria-label="Add to Wishlist" style="position:static; width: 50px; height: 50px; flex-shrink:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
+        </div>
+
+        <!-- Sticky Mobile Cart -->
+        <div id="sticky-cart" style="position:fixed; bottom:0; left:0; right:0; background:var(--white); padding:16px 24px; box-shadow:0 -4px 16px var(--shadow-sm); z-index:2000; transform:translateY(100%); transition:transform var(--t-mid); display:flex; gap:16px;">
+          <button class="btn btn-primary add-to-cart" id="sticky-add-btn" style="flex:1;">Add to Cart</button>
+        </div>
+
+        <!-- Accordion -->
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header">
+              <span>Product Details</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                Soft, breathable fabric sourced meticulously to ensure longevity and comfort.
+                <ul>
+                  <li>100% Premium Fabric</li>
+                  <li>Opaque, non-transparent material</li>
+                  <li>Relaxed fit for modesty</li>
+                  <li>Machine wash cold, air dry</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span>Shipping & Returns</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                We offer pan-India delivery within 3-7 business days. Easy 7-day returns for unworn and unwashed items with tags attached. Please check our detailed policy page for more info.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Size Guide Modal -->
+  <div id="size-modal" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" id="size-modal-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h3 style="font-family:var(--font-serif); margin-bottom:16px;">Size Guide</h3>
+      <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.95rem;">
+        <tr style="border-bottom:1px solid var(--border);">
+          <th style="padding:12px 8px;">Size</th>
+          <th style="padding:12px 8px;">Chest (in)</th>
+          <th style="padding:12px 8px;">Length (in)</th>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 8px;">S</td><td style="padding:12px 8px;">36"</td><td style="padding:12px 8px;">54"</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 8px;">M</td><td style="padding:12px 8px;">38"</td><td style="padding:12px 8px;">54"</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 8px;">L</td><td style="padding:12px 8px;">40"</td><td style="padding:12px 8px;">56"</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 8px;">XL</td><td style="padding:12px 8px;">42"</td><td style="padding:12px 8px;">56"</td>
+        </tr>
+      </table>
+      <p style="font-size:0.85rem; color:var(--slate); margin-top:16px;">Note: Prayer dresses have an intentionally relaxed fit.</p>
+    </div>
+  </div>
+
+  <!-- Newsletter -->
+  <section class="newsletter-section">
+    <div class="container" data-reveal>
+      <span class="section-label">Join Our Community</span>
+      <h2 class="section-title">Get 10% Off Your First Order</h2>
+      <p>Subscribe to receive updates, access to exclusive deals, and more.</p>
+      <form id="newsletter-form" class="newsletter-form">
+        <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-logo">Bala<span>gha</span></div>
+          <p class="footer-tagline">Modest, elegant evening wear and prayer dresses crafted for comfort and confidence.</p>
+          <div class="footer-social">
+            <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="mailto:hello@balagha.in" aria-label="Email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Shop</h4>
+          <ul class="footer-links">
+            <li><a href="shop.html">All Products</a></li>
+            <li><a href="shop.html?category=prayer-dresses">Prayer Dresses</a></li>
+            <li><a href="shop.html?category=nighties">Nighties</a></li>
+            <li><a href="shop.html?sort=new">New Arrivals</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Information</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="shipping-returns.html">Shipping &amp; Returns</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="terms-of-service.html">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Contact Us</h4>
+          <div class="footer-contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>hello@balagha.in</span>
+          </div>
+          <div class="footer-contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Kozhikode, Kerala, India</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Balagha. All rights reserved.</p>
+        <div class="footer-payments">
+          <span class="pay-badge" aria-label="UPI">
+            <svg class="payment-svg" viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg"><g transform="translate(5,0)"><text x="0" y="42" font-size="34" font-family="Segoe UI, Arial, sans-serif" font-weight="700" fill="#6d6e71">UPI</text><polygon points="78,10 92,32 78,54" fill="#f58220"/><polygon points="88,10 102,32 88,54" fill="#0f9d58"/></g></svg>
+          </span>
+          <span class="pay-badge" aria-label="VISA">
+            <svg class="payment-svg" viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg"><text x="5" y="44" font-size="36" font-family="Arial Black, Arial, sans-serif" font-weight="900" fill="#1a1f71" letter-spacing="2">VISA</text></svg>
+          </span>
+          <span class="pay-badge" aria-label="MasterCard">
+            <svg class="payment-svg" viewBox="0 0 50 32" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="16" r="10" fill="#eb001b"/><circle cx="30" cy="16" r="10" fill="#f79e1b"/></svg>
+          </span>
+          <span class="pay-badge" aria-label="NetBanking">
+            <svg class="payment-svg" viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg"><g fill="#555555"><polygon points="60,12 25,32 95,32"/><rect x="30" y="36" width="10" height="18"/><rect x="55" y="36" width="10" height="18"/><rect x="80" y="36" width="10" height="18"/><rect x="20" y="54" width="80" height="6"/></g></svg>
+          </span>
+        </div>
+      </div>
+      <!-- Owner Signature -->
+      <div class="footer-signature">
+        <span class="footer-signature-text">Designed &amp; built by</span>
+        <span class="footer-signature-dot"></span>
+        <a href="mailto:ashfxk2002@gmail.com" class="footer-signature-link">Ashfaaq</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="shop.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const pid = params.get('id') || 'p1';
+      
+      const product = window.Shop?.getProduct(pid) || {
+        id: pid, name: 'Premium Modest Garment', price: 2499,
+        image: 'images/prayer_dress_hero.png', category: 'prayer-dresses'
+      };
+
+      // Populate DOM
+      document.title = `${product.name} | Balagha`;
+      
+      const bc = document.getElementById('p-bc');
+      bc.classList.remove('skeleton');
+      bc.innerHTML = `<a href="index.html">Home</a> / <a href="shop.html?category=${product.category}">${product.category === 'prayer-dresses' ? 'Prayer Dresses' : 'Nightwear'}</a> / <span>${product.name}</span>`;
+
+      const mainEl = document.getElementById('main-product');
+      mainEl.dataset.productId = product.id;
+      mainEl.dataset.name = product.name;
+      mainEl.dataset.price = product.price;
+
+      const title = document.getElementById('p-title');
+      title.classList.remove('skeleton'); title.style.height = 'auto';
+      title.textContent = product.name;
+
+      const price = document.getElementById('p-price');
+      price.classList.remove('skeleton'); price.style.height = 'auto';
+      // Animated count-up for current & original price
+      const priceVal = product.price;
+      const oldPriceVal = Math.round(product.price * 1.35);
+      price.innerHTML = `<span class="old-price">\u20b9<span id="p-op">0</span></span>&nbsp;\u20b9<span id="p-cp">0</span>`;
+      const pDuration = 900;
+      const pStart = performance.now();
+      const animP = (now) => {
+        const t = Math.min((now - pStart) / pDuration, 1);
+        const e = 1 - Math.pow(1 - t, 3); // easeOutCubic
+        document.getElementById('p-cp').textContent = Math.round(e * priceVal).toLocaleString('en-IN');
+        document.getElementById('p-op').textContent = Math.round(e * oldPriceVal).toLocaleString('en-IN');
+        if (t < 1) requestAnimationFrame(animP);
+      };
+      requestAnimationFrame(animP);
+
+      const img = document.getElementById('p-img');
+      img.src = product.image;
+      img.closest('.gallery-main').classList.remove('skeleton');
+
+      // Setup simple thumbnails simulating gallery
+      const thumbs = document.getElementById('p-thumbs');
+      thumbs.innerHTML = `
+        <div class="thumb active"><img src="${product.image}"></div>
+        <div class="thumb"><img src="images/about_brand.png"></div>
+      `;
+      document.querySelectorAll('.thumb').forEach(t => {
+        t.addEventListener('click', () => {
+          document.querySelectorAll('.thumb').forEach(x => x.classList.remove('active'));
+          t.classList.add('active');
+          img.src = t.querySelector('img').src;
+        });
+      });
+
+      // Size Selection
+      let selectedSize = 'S';
+      document.querySelectorAll('.size-opt').forEach(opt => {
+        opt.addEventListener('click', () => {
+          document.querySelectorAll('.size-opt').forEach(x => x.classList.remove('active'));
+          opt.classList.add('active');
+          selectedSize = opt.textContent;
+        });
+      });
+
+      // Qty Selection
+      const qtyVal = document.getElementById('qty-val');
+      document.getElementById('qty-plus').addEventListener('click', () => {
+        qtyVal.value = parseInt(qtyVal.value) + 1;
+      });
+      document.getElementById('qty-minus').addEventListener('click', () => {
+        const v = parseInt(qtyVal.value);
+        if (v > 1) qtyVal.value = v - 1;
+      });
+
+      // Add to Cart Logic
+      const handleAddToCart = () => {
+        window.Cart.add({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          size: selectedSize,
+          qty: parseInt(qtyVal.value),
+          image: product.image
+        });
+      };
+      document.getElementById('add-btn').addEventListener('click', handleAddToCart);
+      document.getElementById('sticky-add-btn').addEventListener('click', handleAddToCart);
+
+      // Sticky Cart Observer
+      const mainActions = document.getElementById('main-actions');
+      const stickyCart = document.getElementById('sticky-cart');
+      if (window.innerWidth <= 900) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+              stickyCart.style.transform = 'translateY(0)';
+            } else {
+              stickyCart.style.transform = 'translateY(100%)';
+            }
+          });
+        }, { threshold: 0 });
+        observer.observe(mainActions);
+      }
+
+      // Size Modal
+      const modal = document.getElementById('size-modal');
+      document.getElementById('size-guide-trigger').addEventListener('click', () => {
+        modal.classList.add('active');
+      });
+      document.getElementById('size-modal-close').addEventListener('click', () => {
+        modal.classList.remove('active');
+      });
+      modal.addEventListener('click', e => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+
+      // Wishlist
+      const wishBtn = document.getElementById('wish-btn');
+      wishBtn.dataset.wishlistBtn = product.id;
+      wishBtn.dataset.name = product.name;
+      wishBtn.classList.toggle('active', window.Wishlist.has(product.id));
+      wishBtn.addEventListener('click', () => {
+        window.Wishlist.toggle(product.id, product.name);
+        wishBtn.classList.toggle('active', window.Wishlist.has(product.id));
+      });
+
+      // Accordion
+      document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+          const item = header.parentElement;
+          const isActive = item.classList.contains('active');
+          document.querySelectorAll('.accordion-item').forEach(x => x.classList.remove('active'));
+          if (!isActive) item.classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

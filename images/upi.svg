@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 28" width="72" height="28">
+  <!-- UPI text -->
+  <text x="2" y="21" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#ffffff" letter-spacing="1">UPI</text>
+  <!-- Arrow icon (two chevrons, orange + green, representing UPI arrows) -->
+  <!-- Orange downward arrow -->
+  <polygon points="57,5 65,5 61,13" fill="#F47920"/>
+  <!-- Green upward arrow -->
+  <polygon points="57,23 65,23 61,15" fill="#3DAC35"/>
+</svg>

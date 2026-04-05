@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 30" width="36" height="30">
+  <!-- Bank building columns and roof -->
+  <rect x="3" y="13" width="4" height="10" rx="1" fill="#ffffff"/>
+  <rect x="10" y="13" width="4" height="10" rx="1" fill="#ffffff"/>
+  <rect x="17" y="13" width="4" height="10" rx="1" fill="#ffffff"/>
+  <rect x="24" y="13" width="4" height="10" rx="1" fill="#ffffff"/>
+  <!-- Base bar -->
+  <rect x="1" y="24" width="34" height="3" rx="1" fill="#ffffff"/>
+  <!-- Top roof triangle -->
+  <polygon points="18,2 1,12 35,12" fill="#ffffff"/>
+  <!-- Central circle (coin/emblem) -->
+  <circle cx="18" cy="10" r="3" fill="rgba(0,0,0,0.3)"/>
+</svg>
