@@ -184,47 +184,7 @@
       height: 20px !important;
     }
 
-    /* Accordion */
-    .accordion {
-      border-top: 1px solid var(--border-gold);
-      margin-top: 24px;
-    }
-    .accordion-item {
-      border-bottom: 1px solid var(--border-gold);
-    }
-    .accordion-header {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 0;
-      font-size: 1.1rem;
-      font-family: var(--font-serif);
-      font-weight: 600;
-      color: var(--text-cream);
-      transition: color var(--t-fast);
-      background: transparent;
-    }
-    .accordion-header:hover { color: var(--gold); }
-    .accordion-header svg {
-      width: 20px; height: 20px;
-      transition: transform var(--t-mid);
-    }
-    .accordion-item.active .accordion-header svg { transform: rotate(180deg); }
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height var(--t-mid) var(--ease);
-    }
-    .accordion-item.active .accordion-content { max-height: 500px; }
-    .accordion-inner {
-      padding-bottom: 24px;
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      line-height: 1.8;
-    }
-    .accordion-inner ul { list-style: disc; padding-left: 20px; margin-top: 12px; }
-    .accordion-inner li { margin-bottom: 6px; }
+
 
     /* ── Responsive refinements ── */
     @media (max-width: 900px) {
@@ -377,35 +337,26 @@
           <button class="btn btn-primary add-to-cart" id="sticky-add-btn" style="flex:1; min-height: 52px; font-size: 1rem;">Add to Cart</button>
         </div>
 
-        <!-- Accordion -->
-        <div class="accordion">
-          <div class="accordion-item active">
-            <button class="accordion-header">
-              <span>Product Details</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="accordion-content">
-              <div class="accordion-inner">
-                Soft, breathable fabric sourced meticulously to ensure longevity and comfort.
-                <ul>
-                  <li>100% Premium Fabric</li>
-                  <li>Opaque, non-transparent material</li>
-                  <li>Relaxed fit for modesty</li>
-                  <li>Machine wash cold, air dry</li>
-                </ul>
-              </div>
+        <!-- Product Info Blocks -->
+        <div class="product-info-blocks" style="margin-top: 56px;">
+          <div class="info-block" style="border-top: 1px solid var(--border-gold); padding-top: 40px; margin-bottom: 48px;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--text-cream); margin-bottom: 24px;">Product Details</h3>
+            <div class="product-desc" style="margin-bottom: 0;">
+              Soft, breathable fabric sourced meticulously to ensure longevity and comfort.
+              <ul style="list-style: disc; padding-left: 20px; margin-top: 16px; margin-bottom: 0;">
+                <li style="margin-bottom: 10px;">100% Premium Fabric</li>
+                <li style="margin-bottom: 10px;">Opaque, non-transparent material</li>
+                <li style="margin-bottom: 10px;">Relaxed fit for modesty</li>
+                <li>Machine wash cold, air dry</li>
+              </ul>
             </div>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header">
-              <span>Shipping & Returns</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="accordion-content">
-              <div class="accordion-inner">
-                We offer pan-India delivery within 3-7 business days. Easy 7-day returns for unworn and unwashed items with tags attached. Please check our detailed policy page for more info.
-              </div>
-            </div>
+          
+          <div class="info-block" style="border-top: 1px solid var(--border-gold); padding-top: 40px;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--text-cream); margin-bottom: 24px;">Shipping & Returns</h3>
+            <p class="product-desc" style="margin-bottom: 0;">
+              We offer pan-India delivery within 3-7 business days. Easy 7-day returns for unworn and unwashed items with tags attached. Please check our detailed policy page for more info.
+            </p>
           </div>
         </div>
 
