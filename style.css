@@ -409,12 +409,12 @@ p {
   align-items: center;
   justify-content: center;
   text-align: center;
+  /* Parallax only on desktop — iOS Safari never supported background-attachment:fixed */
   background-attachment: fixed;
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
   color: var(--text-cream);
-  /* Top pad clears fixed navbar; bottom pad gives text room to breathe */
   padding: var(--nav-h) clamp(20px, 6vw, 64px) clamp(60px, 8vh, 100px);
   overflow: hidden;
 }
@@ -424,7 +424,9 @@ p {
 }
 @media (max-width: 960px) {
   .brand-hero {
+    /* Disable parallax on tablet & mobile — avoids iOS Safari rendering bugs */
     background-attachment: scroll;
+    background-position: center center;
     height: auto;
     min-height: 520px;
     padding: calc(var(--nav-h) + 48px) 24px 80px;
@@ -618,6 +620,8 @@ p {
 .footer-social {
   display: flex;
   gap: 10px;
+  /* Desktop: left-aligned within footer brand column */
+  justify-content: flex-start;
 }
 .footer-social a {
   width: 36px; height: 36px;
@@ -1210,6 +1214,7 @@ p {
     text-align: center;
   }
   .footer-links { align-items: center; }
+  .footer-social { justify-content: center; }  /* center icons on mobile */
   .footer-contact-item { justify-content: center; }
   .footer-bottom  { flex-direction: column; text-align: center; gap: 16px; }
   .footer-payments { justify-content: center; flex-wrap: wrap; gap: 8px; }
