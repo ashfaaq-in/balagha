@@ -14,16 +14,16 @@
     .checkout-layout {
       display: grid;
       grid-template-columns: 1fr 400px;
-      gap: 64px;
-      padding-top: 48px;
+      gap: var(--space-8);
+      padding-top: var(--space-6);
     }
 
     /* Form Panels */
     .chk-panel {
       background: var(--white);
       border-radius: 24px;
-      padding: 32px;
-      margin-bottom: 32px;
+      padding: var(--space-6) var(--space-7);
+      margin-bottom: var(--space-6);
       box-shadow: 0 4px 16px var(--shadow-sm);
     }
     .chk-title {
@@ -49,16 +49,16 @@
     }
 
     /* Forms */
-    .form-grid { display: grid; gap: 20px; }
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .input-grp { display: flex; flex-direction: column; gap: 8px; }
-    .chk-label { font-size: 0.9rem; font-weight: 500; color: var(--mocha); }
+    .form-grid { display: grid; gap: var(--space-5); }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+    .input-grp { display: flex; flex-direction: column; gap: var(--space-2); }
+    .chk-label { font-size: 0.95rem; font-weight: 500; color: var(--mocha); }
     .chk-input, .chk-select {
       width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--border);
+      padding: 16px;
+      border: 1.5px solid var(--border);
       border-radius: 12px;
-      font-size: 0.95rem;
+      font-size: 1rem;
       outline: none;
       transition: all var(--t-fast);
       background: var(--bg-mid);
@@ -175,10 +175,10 @@
     }
     .is-invalid + .error-msg { display: block; }
 
-    @media (max-width: 900px) {
-      .checkout-layout { grid-template-columns: 1fr; gap: 32px; flex-direction: column-reverse; display: flex; }
-      .chk-panel { padding: 24px 16px; }
-      .row-2 { grid-template-columns: 1fr; }
+    @media (max-width: 768px) {
+      .checkout-layout { grid-template-columns: 1fr; gap: var(--space-6); flex-direction: column-reverse; display: flex; }
+      .chk-panel { padding: var(--space-6) var(--space-4); }
+      .row-2 { grid-template-columns: 1fr; gap: var(--space-5); }
     }
   </style>
 </head>

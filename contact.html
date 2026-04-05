@@ -70,12 +70,12 @@
     .contact-form {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: var(--space-6);
     }
-    .form-group { display: flex; flex-direction: column; gap: 8px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .form-group { display: flex; flex-direction: column; gap: var(--space-2); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
     .form-label {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: var(--mocha);
     }
@@ -98,9 +98,9 @@
     textarea.form-input { resize: vertical; min-height: 150px; }
 
     @media (max-width: 768px) {
-      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-      .form-row { grid-template-columns: 1fr; gap: 24px; }
-      .contact-info { padding: 32px 24px; }
+      .contact-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+      .form-row { grid-template-columns: 1fr; gap: var(--space-6); }
+      .contact-info { padding: var(--space-6) var(--space-5); }
     }
   </style>
 </head>
