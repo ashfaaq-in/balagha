@@ -1841,3 +1841,63 @@ p {
   .stats-grid { grid-template-columns: 1fr; gap: 48px; }
   .accordion-btn { font-size: 1.25rem; }
 }
+
+/* ── UI Modal ── */
+.balagha-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 31, 21, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 24px;
+  animation: modalFadeIn var(--t-mid) var(--ease);
+}
+.balagha-modal-overlay.hide {
+  animation: modalFadeOut var(--t-fast) var(--ease) forwards;
+}
+.balagha-modal-content {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 4px 16px rgba(201,169,110,0.1);
+  animation: modalSlideUp var(--t-mid) var(--ease);
+}
+#balagha-modal-text {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  color: var(--text-cream);
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+.balagha-modal-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.balagha-modal-actions .btn {
+  flex: 1;
+  min-width: 140px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modalFadeOut {
+  from { opacity: 1; pointer-events: none;}
+  to { opacity: 0; pointer-events: none;}
+}
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

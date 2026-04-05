@@ -7,21 +7,26 @@
   <link rel="stylesheet" href="style.css?v=2.0">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <style>
-    .product-detail-section { padding: 48px 0; }
+    .product-detail-section { padding: clamp(48px, 8vw, 96px) 0; }
     .product-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: start;
+      gap: clamp(48px, 8vw, 96px);
+      align-items: stretch;
     }
     
     /* Gallery */
+    .product-grid-left {
+      position: sticky;
+      top: calc(var(--nav-h) + 32px);
+      height: fit-content;
+    }
     .gallery-main {
-      border-radius: 24px;
+      border-radius: 20px;
       overflow: hidden;
-      background: var(--cream-dark);
-      aspect-ratio: 3/4;
-      margin-bottom: 16px;
+      background: var(--bg-mid);
+      aspect-ratio: 4/5;
+      margin-bottom: 20px;
     }
     .gallery-main img {
       width: 100%; height: 100%;
@@ -38,8 +43,9 @@
       aspect-ratio: 1;
       cursor: pointer;
       border: 2px solid transparent;
-      opacity: 0.6;
+      opacity: 0.5;
       transition: all var(--t-fast);
+      background: var(--bg-mid);
     }
     .thumb.active { border-color: var(--gold); opacity: 1; }
     .thumb:hover { opacity: 1; }
@@ -47,40 +53,42 @@
 
     /* Info */
     .product-bc {
-      font-size: 0.85rem;
-      color: var(--mocha-mid);
-      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
     }
     .product-bc a { color: var(--gold); }
     .product-bc a:hover { text-decoration: underline; }
     
     .product-title {
-      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 5vw, 3.2rem);
       margin-bottom: 16px;
-      line-height: 1.2;
-      color: var(--mocha);
+      line-height: 1.15;
+      color: var(--text-cream);
     }
     .product-price {
-      font-size: 1.5rem;
-      font-weight: 600;
+      font-size: 1.6rem;
+      font-weight: 500;
       color: var(--gold);
-      margin-bottom: 24px;
+      margin-bottom: 32px;
     }
     .product-desc {
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: var(--mocha-mid);
-      margin-bottom: 32px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 40px;
     }
 
     /* Size selector */
-    .selector-wrap { margin-bottom: 32px; }
+    .selector-wrap { margin-bottom: 40px; }
     .selector-top {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-cream);
     }
     .size-guide-link {
       color: var(--gold);
@@ -99,41 +107,43 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1.5px solid var(--border);
+      border: 1px solid var(--border-gold);
       border-radius: 8px;
       font-size: 0.95rem;
       font-weight: 500;
       cursor: pointer;
       transition: all var(--t-fast);
-      background: var(--white);
+      background: transparent;
+      color: var(--text-cream);
     }
     .size-opt.active {
       border-color: var(--gold);
       background: var(--gold);
-      color: var(--white);
+      color: var(--bg-deep);
     }
     .size-opt:not(.active):hover { border-color: var(--gold); color: var(--gold); }
 
     /* Actions */
     .actions {
       display: flex;
-      gap: var(--space-4);
-      margin-bottom: var(--space-6);
+      gap: 16px;
+      margin-bottom: 48px;
     }
     .qty-wrap {
       display: flex;
       align-items: center;
-      border: 1.5px solid var(--border);
+      border: 1px solid var(--border-gold);
       border-radius: 50px;
-      background: var(--white);
+      background: transparent;
+      padding: 0 4px;
     }
     .qty-btn {
       width: 48px; height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
-      color: var(--mocha);
+      font-size: 1.4rem;
+      color: var(--text-cream);
       transition: color var(--t-fast);
     }
     .qty-btn:hover { color: var(--gold); }
@@ -142,18 +152,20 @@
       text-align: center;
       border: none;
       background: transparent;
-      font-size: 1rem;
-      font-weight: 600;
+      color: var(--text-cream);
+      font-size: 1.1rem;
+      font-weight: 500;
       pointer-events: none;
     }
-    .add-to-cart { flex: 1; }
+    .add-to-cart { flex: 1; border-radius: 50px; font-size: 1.05rem; }
 
     /* Accordion */
     .accordion {
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--border-gold);
+      margin-top: 24px;
     }
     .accordion-item {
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-gold);
     }
     .accordion-header {
       width: 100%;
@@ -161,10 +173,12 @@
       justify-content: space-between;
       align-items: center;
       padding: 24px 0;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
+      font-family: var(--font-serif);
       font-weight: 600;
-      color: var(--mocha);
+      color: var(--text-cream);
       transition: color var(--t-fast);
+      background: transparent;
     }
     .accordion-header:hover { color: var(--gold); }
     .accordion-header svg {
@@ -180,25 +194,39 @@
     .accordion-item.active .accordion-content { max-height: 500px; }
     .accordion-inner {
       padding-bottom: 24px;
-      font-size: 0.95rem;
-      color: var(--mocha-mid);
-      line-height: 1.7;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.8;
     }
     .accordion-inner ul { list-style: disc; padding-left: 20px; margin-top: 12px; }
     .accordion-inner li { margin-bottom: 6px; }
 
+    /* ── Responsive refinements ── */
+    @media (max-width: 900px) {
+      .product-grid-left { position: static; }
+    }
     @media (max-width: 768px) {
-      .product-grid { grid-template-columns: 1fr; gap: 32px; }
-      .gallery-thumbs { grid-template-columns: repeat(3, 1fr); }
-      .actions { flex-wrap: wrap; }
+      .product-detail-section { padding: 32px 0 56px; }
+      .product-grid { grid-template-columns: 1fr; gap: 40px; }
+      .gallery-main { border-radius: 16px; margin-bottom: 12px; }
+      .gallery-thumbs { gap: 10px; }
+      /* Actions: qty + button side-by-side, wishlist inline */
+      .actions { flex-wrap: wrap; gap: 12px; margin-bottom: 40px;}
       .actions .qty-wrap { flex: 0 0 auto; }
-      .actions .add-to-cart { flex: 1; min-width: 160px; }
+      .actions .add-to-cart { flex: 1; min-width: 140px; }
+      .product-title { font-size: clamp(2rem, 6vw, 2.5rem); }
+      .product-price { font-size: 1.5rem; margin-bottom: 24px; }
+      .product-desc { font-size: 1.05rem; margin-bottom: 32px; }
+      .selector-wrap { margin-bottom: 32px; }
+      .size-opt { width: 48px; height: 48px; font-size: 0.9rem; }
     }
     @media (max-width: 480px) {
-      .product-detail-section { padding: 32px 0; }
-      .gallery-thumbs { grid-template-columns: repeat(2, 1fr); }
-      .actions { flex-direction: column; }
-      .actions .btn { width: 100%; }
+      .product-detail-section { padding: 24px 0 48px; }
+      .gallery-thumbs { gap: 8px; }
+      .actions { flex-direction: column; gap: 12px; }
+      .actions .add-to-cart, .actions .qty-wrap { width: 100%; }
+      .actions .qty-wrap { justify-content: center; }
+      .actions .wishlist-btn { align-self: center; }
     }
   </style>
 </head>
@@ -245,14 +273,14 @@
   </nav>
 
   <!-- Product Detail -->
-  <main class="container product-detail-section" style="margin-top: var(--nav-h);">
+  <main class="container product-detail-section" style="margin-top: var(--nav-h); padding-top: clamp(28px, 5vw, 48px);">
     <!-- Breadcrumb will be injected here -->
     <div id="p-bc" class="product-bc skeleton" style="height: 20px; width: 60%; margin-bottom: 24px;"></div>
 
     <div class="product-grid" data-product id="main-product" data-product-id="p1">
       
       <!-- Gallery -->
-      <div>
+      <div class="product-grid-left">
         <div class="gallery-main skeleton">
           <img id="p-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Loading">
         </div>
@@ -276,7 +304,7 @@
 
         <div id="p-price" class="product-price skeleton" style="height: 30px; width: 120px;"></div>
         
-        <p class="product-desc text-mocha-mid">Experience the perfect blend of modesty and luxury. This meticulously crafted garment offers ultimate comfort without compromising on elegance, making it an essential addition to your daily routine.</p>
+        <p class="product-desc">Experience the perfect blend of modesty and luxury. This meticulously crafted garment offers ultimate comfort without compromising on elegance, making it an essential addition to your daily routine.</p>
 
         <!-- Size -->
         <div class="selector-wrap">
@@ -305,9 +333,23 @@
           </button>
         </div>
 
-        <!-- Sticky Mobile Cart -->
-        <div id="sticky-cart" style="position:fixed; bottom:0; left:0; right:0; background:var(--white); padding:16px 24px; box-shadow:0 -4px 16px var(--shadow-sm); z-index:2000; transform:translateY(100%); transition:transform var(--t-mid); display:flex; gap:16px;">
-          <button class="btn btn-primary add-to-cart" id="sticky-add-btn" style="flex:1;">Add to Cart</button>
+        <!-- Sticky Mobile Cart — dark themed, slides up when Add to Cart scrolls off screen -->
+        <div id="sticky-cart" style="
+          position: fixed;
+          bottom: 0; left: 0; right: 0;
+          background: var(--bg-deep);
+          border-top: 1px solid var(--border-gold);
+          padding: 14px 20px;
+          padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+          box-shadow: 0 -4px 24px rgba(0,0,0,0.35);
+          z-index: 2000;
+          transform: translateY(100%);
+          transition: transform var(--t-mid) var(--ease);
+          display: flex;
+          gap: 14px;
+          align-items: center;
+        ">
+          <button class="btn btn-primary add-to-cart" id="sticky-add-btn" style="flex:1; min-height: 52px; font-size: 1rem;">Add to Cart</button>
         </div>
 
         <!-- Accordion -->
