@@ -747,12 +747,31 @@
 
       // Wishlist
       const wishBtn = document.getElementById('wish-btn');
+      const wishText = wishBtn.querySelector('.wish-text');
       wishBtn.dataset.wishlistBtn = product.id;
       wishBtn.dataset.name = product.name;
       wishBtn.classList.toggle('active', window.Wishlist.has(product.id));
+      
+      let wishTimer;
       wishBtn.addEventListener('click', () => {
-        window.Wishlist.toggle(product.id, product.name);
-        wishBtn.classList.toggle('active', window.Wishlist.has(product.id));
+        const isNowAdded = window.Wishlist.toggle(product.id, product.name);
+        wishBtn.classList.toggle('active', isNowAdded);
+        
+        // Visual feedback interaction
+        wishBtn.style.transform = 'scale(0.92)';
+        wishBtn.style.opacity = '0.8';
+        if (wishText) {
+          wishText.textContent = isNowAdded ? 'Added to Wishlist!' : 'Removed';
+        }
+        
+        clearTimeout(wishTimer);
+        wishTimer = setTimeout(() => {
+          wishBtn.style.transform = '';
+          wishBtn.style.opacity = '';
+          if (wishText) {
+            wishText.textContent = 'Add to Wishlist';
+          }
+        }, 1200);
       });
 
       // Accordion
