@@ -146,22 +146,71 @@
     .cart-empty-icon svg { width: 32px; height: 32px; }
 
     @media (max-width: 768px) {
-      .cart-layout { grid-template-columns: 1fr; gap: 40px; }
+      .cart-layout { grid-template-columns: 1fr; gap: 32px; }
       .cart-table-head { display: none; }
+
+      /* ── Mobile cart item: clean flex column, no overlap ── */
       .cart-item {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding-bottom: 28px;
+        margin-bottom: 28px;
+      }
+
+      /* Row 1: image + product details side-by-side */
+      .cart-item-info {
+        display: flex;
         gap: 16px;
-        position: relative;
+        align-items: flex-start;
+        margin-bottom: 16px;
+      }
+
+      /* Product name + meta stacks cleanly */
+      .cart-item-details {
+        flex: 1;
+        min-width: 0; /* prevents text overflow */
+      }
+      .cart-item-name {
+        display: block;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        padding-right: 0; /* remove the gap that was caused by absolute remove btn */
+      }
+
+      /* Remove button: below meta, inline flow — no overlap */
+      .cart-item-remove {
+        position: static;  /* ← KEY: override the absolute positioning */
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 10px;
+        font-size: 0.78rem;
+        padding: 4px 0;
+      }
+      .cart-item-remove::before {
+        content: '\00D7'; /* × character */
+        font-size: 0.9rem;
+        line-height: 1;
+      }
+
+      /* Row 2: qty controls + total price in same row */
+      .cart-item-row2 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
       }
       .cart-item-price { display: none; }
-      .cart-item-total { font-size: 1.1rem; margin-top: 8px; }
-      .qty-wrap { margin-top: 8px; }
-      .cart-item-remove { position: absolute; top: 0; right: 0; }
+      .cart-item-total { font-size: 1.05rem; }
+      .qty-wrap { margin-top: 0; }
       .summary-box { padding: 24px; border-radius: 16px; position: static; }
     }
     @media (max-width: 480px) {
-      .cart-item-img { width: 80px; height: 104px; }
+      .cart-item-img { width: 80px; height: 104px; border-radius: 10px; }
       .cart-item-info { gap: 12px; }
+      .cart-item-name { font-size: 0.98rem; }
     }
   </style>
 </head>
@@ -377,15 +426,15 @@
                 <div class="cart-item-remove" data-key="${item.key}">Remove</div>
               </div>
             </div>
-            <div class="cart-item-price">₹${item.price.toLocaleString()}</div>
-            <div>
+            <div class="cart-item-row2">
               <div class="qty-wrap">
                 <button class="qty-btn qty-minus" data-key="${item.key}">−</button>
                 <input type="text" class="qty-input" value="${item.qty}" readonly>
                 <button class="qty-btn qty-plus" data-key="${item.key}">+</button>
               </div>
+              <div class="cart-item-total">₹${(item.price * item.qty).toLocaleString()}</div>
             </div>
-            <div class="cart-item-total">₹${(item.price * item.qty).toLocaleString()}</div>
+            <div class="cart-item-price">₹${item.price.toLocaleString()}</div>
           </div>
         `).join('');
 

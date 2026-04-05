@@ -17,8 +17,8 @@ const Modal = (() => {
         <div class="balagha-modal-content">
           <p id="balagha-modal-text"></p>
           <div class="balagha-modal-actions">
-            <button id="balagha-modal-yes" class="btn btn-primary btn-sm">Yes</button>
-            <button id="balagha-modal-no" class="btn btn-secondary btn-sm">Cancel</button>
+            <button id="balagha-modal-yes" class="btn btn-primary btn-sm">Add One More</button>
+            <button id="balagha-modal-no" class="btn btn-secondary btn-sm">Keep Current</button>
           </div>
         </div>
       `;
@@ -79,10 +79,10 @@ const Cart = (() => {
     const key = `${product.id}-${product.size || 'S'}`;
     const idx = items.findIndex(i => i.key === key);
     if (idx > -1) {
-      Modal.confirm(`This item is already in your cart. Would you like to add another?`, () => {
+      Modal.confirm(`Already in your cart — would you like to add one more?`, () => {
         items[idx].qty += product.qty || 1;
         save(items);
-        Toast.show(`Increased "${product.name}" quantity`, 'success');
+        Toast.show(`Quantity updated for "${product.name}"`, 'success');
         bumpBadge();
       });
     } else {

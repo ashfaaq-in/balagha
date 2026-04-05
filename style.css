@@ -730,6 +730,9 @@ p {
   object-fit: cover;
   object-position: center top;
   display: block;
+  /* Prevent any image distortion across resize events */
+  max-width: 100%;
+  flex-shrink: 0;
   transition: transform var(--t-slow) var(--ease);
 }
 .product-card:hover .product-card-img img { transform: scale(1.05); }
@@ -938,6 +941,8 @@ p {
   background: linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
   padding: var(--section-pad) 0;
   text-align: center;
+  /* Subtle top border gives visual breathing room vs product grid above */
+  border-top: 1px solid var(--border-gold);
 }
 .newsletter-section .section-label { color: var(--gold); }
 .newsletter-section h2 { color: var(--text-cream); margin-bottom: 12px; }
@@ -1011,6 +1016,10 @@ p {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  /* Hard-lock: never allow image to overflow card bounds */
+  display: block;
+  max-width: 100%;
   transition: transform var(--t-slow) var(--ease);
 }
 .cat-card:hover .cat-card-img { transform: scale(1.07); }
@@ -1232,6 +1241,13 @@ p {
   /* ── Product grid: 2-col compact ── */
   .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+  /* ── Safety: last card never clips into next section ── */
+  /* Applies to any section that directly wraps a product grid */
+  .section.container .grid-4,
+  .section.container .grid-3 {
+    margin-bottom: 12px;
+  }
 
   /* ── Product card internals ── */
   .product-card { padding: 10px; border-radius: 14px; }
