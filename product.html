@@ -7,153 +7,93 @@
   <link rel="stylesheet" href="style.css?v=2.0">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <style>
-    /* =========================================
-       PRODUCT PAGE COMPREHENSIVE REWRITE
-       ========================================= */
-    .product-page-wrap {
-      padding-top: calc(var(--nav-h) + 48px);
-      padding-bottom: 80px;
-      max-width: 1240px;
-      margin: 0 auto;
-      width: 100%;
-      padding-left: clamp(20px, 5vw, 40px);
-      padding-right: clamp(20px, 5vw, 40px);
-    }
-
-    /* Breadcrumb */
-    .product-bc {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-      line-height: 1.4;
-    }
-    .product-bc a { color: var(--gold); transition: color var(--t-fast); }
-    .product-bc a:hover { color: var(--gold-light); }
-    .product-bc span.separator { color: var(--text-faint); margin: 0 4px; }
-
-    /* Layout System */
+    .product-detail-section { padding: clamp(48px, 8vw, 96px) 0; }
     .product-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: clamp(48px, 6vw, 96px);
-      align-items: start;
+      gap: clamp(48px, 8vw, 96px);
+      align-items: stretch;
     }
-
-    /* Left Image Column */
+    
+    /* Gallery */
     .product-grid-left {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
       position: sticky;
       top: calc(var(--nav-h) + 32px);
+      height: fit-content;
     }
     .gallery-main {
-      width: 100%;
-      aspect-ratio: 4/5; /* enforces ratio constraint */
-      border-radius: 16px;
+      border-radius: 20px;
+      overflow: hidden;
       background: var(--bg-mid);
-      overflow: hidden; /* cuts off any potential image overflow */
-      position: relative;
+      aspect-ratio: 4/5;
+      margin-bottom: 20px;
     }
     .gallery-main img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* perfectly scales and prevents distortion */
-      display: block;
+      width: 100%; height: 100%;
+      object-fit: cover;
     }
     .gallery-thumbs {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 16px;
     }
     .thumb {
-      aspect-ratio: 1;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
-      background: var(--bg-mid);
+      aspect-ratio: 1;
       cursor: pointer;
       border: 2px solid transparent;
-      transition: border-color var(--t-fast), opacity var(--t-fast);
       opacity: 0.5;
+      transition: all var(--t-fast);
+      background: var(--bg-mid);
     }
-    .thumb img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
-    .thumb.active, .thumb:hover {
-      opacity: 1;
-      border-color: var(--gold);
-    }
+    .thumb.active { border-color: var(--gold); opacity: 1; }
+    .thumb:hover { opacity: 1; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* Right Details Column */
-    .product-info {
-      display: flex;
-      flex-direction: column;
-      max-width: 540px; /* Constrain text width for premium readability */
-      width: 100%;
+    /* Info */
+    .product-bc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
     }
+    .product-bc a { color: var(--gold); }
+    .product-bc a:hover { text-decoration: underline; }
     
     .product-title {
       font-family: var(--font-serif);
-      font-size: clamp(2.2rem, 4vw, 3.2rem);
-      font-weight: 600;
+      font-size: clamp(2.4rem, 5vw, 3.2rem);
+      margin-bottom: 16px;
       line-height: 1.15;
       color: var(--text-cream);
-      margin-bottom: 12px;
-      word-break: break-word; /* fixes title overflows */
     }
-    
-    .product-card-stars {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 24px;
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
-    .product-card-stars svg { width: 16px; height: 16px; color: var(--gold); }
-    
     .product-price {
-      display: flex;
-      align-items: center;
-      gap: 12px;
       font-size: 1.6rem;
       font-weight: 500;
       color: var(--gold);
-      margin-bottom: 24px;
+      margin-bottom: 32px;
     }
-    .product-price .old-price {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      text-decoration: line-through;
-    }
-
     .product-desc {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       line-height: 1.8;
       color: var(--text-muted);
       margin-bottom: 40px;
     }
 
-    /* Options */
-    .selector-wrap { margin-bottom: 32px; }
+    /* Size selector */
+    .selector-wrap { margin-bottom: 40px; }
     .selector-top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      font-size: 0.95rem;
-      color: var(--text-cream);
+      margin-bottom: 16px;
+      font-size: 1rem;
       font-weight: 500;
+      color: var(--text-cream);
     }
     .size-guide-link {
-      background: none;
-      border: none;
       color: var(--gold);
       text-decoration: underline;
+      font-weight: 500;
       font-size: 0.85rem;
       cursor: pointer;
     }
@@ -164,26 +104,24 @@
     }
     .size-opt {
       width: 52px; height: 52px;
-      border-radius: 8px;
-      border: 1px solid var(--border-gold);
-      background: transparent;
-      color: var(--text-cream);
-      font-weight: 500;
       display: flex;
       align-items: center;
       justify-content: center;
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
       cursor: pointer;
       transition: all var(--t-fast);
-      font-size: 1rem;
+      background: transparent;
+      color: var(--text-cream);
     }
     .size-opt.active {
+      border-color: var(--gold);
       background: var(--gold);
       color: var(--bg-deep);
-      border-color: var(--gold);
     }
-    .size-opt:not(.active):hover {
-      border-color: var(--gold);
-    }
+    .size-opt:not(.active):hover { border-color: var(--gold); color: var(--gold); }
 
     /* Actions */
     .actions {
@@ -196,83 +134,80 @@
       align-items: center;
       border: 1px solid var(--border-gold);
       border-radius: 50px;
-      height: 56px;
-      padding: 0 6px;
+      background: transparent;
+      padding: 0 4px;
     }
     .qty-btn {
-      width: 44px; height: 100%;
-      color: var(--text-cream);
+      width: 48px; height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 1.4rem;
-      background: none; border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      color: var(--text-cream);
       transition: color var(--t-fast);
     }
     .qty-btn:hover { color: var(--gold); }
     .qty-input {
       width: 40px;
       text-align: center;
-      background: transparent;
       border: none;
+      background: transparent;
       color: var(--text-cream);
-      font-weight: 600;
       font-size: 1.1rem;
+      font-weight: 500;
       pointer-events: none;
     }
+    .add-to-cart { flex: 1; border-radius: 50px; font-size: 1.05rem; }
     
-    .add-to-cart {
-      flex: 1;
-      height: 56px;
-      border-radius: 50px;
-      font-size: 1.05rem;
-    }
-    .wishlist-btn {
-      width: 56px; height: 56px;
+    .p-wishlist-btn {
+      position: static !important; /* override the absolute positioning of base class */
+      width: 50px !important;
+      height: 50px !important;
+      flex-shrink: 0;
+      background: rgba(242, 237, 228, 0.95);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       border-radius: 50%;
-      background: transparent;
-      border: 1px solid var(--border-gold);
-      color: var(--text-cream);
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: all var(--t-fast);
-      flex-shrink: 0;
-      position: relative; /* overrides old absolute positioning */
+      border: 1.5px solid rgba(201,169,110,0.5);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform var(--t-fast), background var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+      z-index: 10;
     }
-    .wishlist-btn svg { width: 22px; height: 22px; color: var(--text-cream); }
-    .wishlist-btn:hover { border-color: var(--gold); color: var(--gold); }
-    .wishlist-btn:hover svg { color: var(--gold); }
-    .wishlist-btn.active { background: var(--gold); border-color: var(--gold); }
-    .wishlist-btn.active svg { color: var(--bg-deep); }
-    .wish-text { display: none; } /* only visible on mobile */
+    .p-wishlist-btn svg {
+      width: 20px !important;
+      height: 20px !important;
+    }
 
     /* Accordion */
     .accordion {
       border-top: 1px solid var(--border-gold);
+      margin-top: 24px;
     }
     .accordion-item {
       border-bottom: 1px solid var(--border-gold);
     }
     .accordion-header {
       width: 100%;
-      background: transparent;
-      border: none;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 24px 0;
+      font-size: 1.1rem;
       font-family: var(--font-serif);
-      font-size: 1.15rem;
       font-weight: 600;
       color: var(--text-cream);
-      cursor: pointer;
       transition: color var(--t-fast);
+      background: transparent;
     }
     .accordion-header:hover { color: var(--gold); }
-    .accordion-header svg { width: 22px; height: 22px; transition: transform var(--t-mid); color: var(--text-cream); }
-    .accordion-item.active .accordion-header svg { transform: rotate(180deg); color: var(--gold); }
-    .accordion-item.active .accordion-header { color: var(--gold); }
-    
+    .accordion-header svg {
+      width: 20px; height: 20px;
+      transition: transform var(--t-mid);
+    }
+    .accordion-item.active .accordion-header svg { transform: rotate(180deg); }
     .accordion-content {
       max-height: 0;
       overflow: hidden;
@@ -285,71 +220,35 @@
       color: var(--text-muted);
       line-height: 1.8;
     }
-    .accordion-inner ul { padding-left: 20px; margin-top: 12px; list-style: disc; }
-    .accordion-inner li { margin-bottom: 8px; }
+    .accordion-inner ul { list-style: disc; padding-left: 20px; margin-top: 12px; }
+    .accordion-inner li { margin-bottom: 6px; }
 
-    /* Sticky Mobile Cart */
-    #sticky-cart {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: var(--bg-deep);
-      border-top: 1px solid var(--border-gold);
-      padding: 16px 20px;
-      padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-      box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
-      z-index: 2000;
-      transform: translateY(100%);
-      transition: transform var(--t-mid) var(--ease);
-      display: flex;
-    }
-
-    /* ── Mobile Layout Enforcement ── */
-    @media (max-width: 960px) {
-      .product-grid { gap: 40px; }
+    /* ── Responsive refinements ── */
+    @media (max-width: 900px) {
       .product-grid-left { position: static; }
-      .product-title { font-size: clamp(2rem, 5vw, 2.8rem); }
-      .product-info { max-width: 100%; }
     }
-    
     @media (max-width: 768px) {
-      .product-page-wrap { padding-top: calc(var(--nav-h) + 24px); padding-bottom: 64px; }
-      
-      /* FORCE single column stacked */
-      .product-grid { grid-template-columns: 1fr; gap: 32px; }
-      
-      /* Image constraints */
-      .gallery-main { aspect-ratio: 4/5; border-radius: 12px; }
-      
-      .product-bc { margin-bottom: 20px; font-size: 0.85rem; }
-      .product-title { line-height: 1.25; margin-bottom: 12px; }
-      .product-price { margin-bottom: 24px; }
+      .product-detail-section { padding: 32px 0 56px; }
+      .product-grid { grid-template-columns: 1fr; gap: 40px; }
+      .gallery-main { border-radius: 16px; margin-bottom: 12px; }
+      .gallery-thumbs { gap: 10px; }
+      /* Actions: qty + button side-by-side, wishlist inline */
+      .actions { flex-wrap: wrap; gap: 12px; margin-bottom: 40px;}
+      .actions .qty-wrap { flex: 0 0 auto; }
+      .actions .add-to-cart { flex: 1; min-width: 140px; }
+      .product-title { font-size: clamp(2rem, 6vw, 2.5rem); }
+      .product-price { font-size: 1.5rem; margin-bottom: 24px; }
       .product-desc { font-size: 1.05rem; margin-bottom: 32px; }
-      
-      /* Mobile Button Stacking Rules */
-      .actions { 
-        flex-direction: column; 
-        gap: 12px; 
-        margin-bottom: 40px; 
-      }
-      .actions > * { width: 100%; } /* Force all flex children to 100% bounds */
-      .qty-wrap { justify-content: space-between; padding: 0 20px; }
-      .qty-btn { width: 60px; }
-      
-      /* Make wishlist a full row button instead of a floating circle */
-      .wishlist-btn { 
-        border-radius: 50px; 
-        height: 56px; 
-        gap: 10px; 
-      }
-      .wishlist-btn svg { width: 20px; height: 20px; }
-      .wish-text { display: inline-block; font-size: 1.05rem; font-weight: 500; font-family: var(--font-sans); }
+      .selector-wrap { margin-bottom: 32px; }
+      .size-opt { width: 48px; height: 48px; font-size: 0.9rem; }
     }
-    
     @media (max-width: 480px) {
+      .product-detail-section { padding: 24px 0 48px; }
       .gallery-thumbs { gap: 8px; }
-      .thumb { border-radius: 8px; }
-      .size-opt { width: 46px; height: 46px; font-size: 0.95rem; }
-      .product-page-wrap { padding-left: 20px; padding-right: 20px; }
+      .actions { flex-wrap: wrap; flex-direction: row; gap: 12px; }
+      .actions .qty-wrap { width: 100%; justify-content: center; flex: unset; }
+      .actions .add-to-cart { flex: 1; min-width: 0; }
+      .actions .wishlist-btn { width: 50px; height: 50px; flex-shrink: 0; }
     }
   </style>
 </head>
@@ -395,81 +294,94 @@
     </ul>
   </nav>
 
-  <!-- Product Detail Structural Rewrite -->
-  <main class="product-page-wrap">
-    
-    <!-- Breadcrumb Structure -->
-    <nav id="p-bc" class="product-bc skeleton" aria-label="Breadcrumb"></nav>
+  <!-- Product Detail -->
+  <main class="container product-detail-section" style="margin-top: var(--nav-h); padding-top: clamp(28px, 5vw, 48px);">
+    <!-- Breadcrumb will be injected here -->
+    <div id="p-bc" class="product-bc skeleton" style="height: 20px; width: 60%; margin-bottom: 24px;"></div>
 
-    <!-- Core Layout -->
     <div class="product-grid" data-product id="main-product" data-product-id="p1">
       
-      <!-- Left: Visual Column -->
-      <section class="product-grid-left">
+      <!-- Gallery -->
+      <div class="product-grid-left">
         <div class="gallery-main skeleton">
-          <img id="p-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Product Loading">
+          <img id="p-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Loading">
         </div>
         <div class="gallery-thumbs" id="p-thumbs">
-          <!-- Populated dynamically via JS -->
+          <!-- Populated by JS -->
         </div>
-      </section>
+      </div>
 
-      <!-- Right: Details Column -->
-      <section class="product-info">
+      <!-- Detail -->
+      <div>
+        <h1 id="p-title" class="product-title skeleton" style="height: 40px; margin-bottom:16px;"></h1>
         
-        <!-- Primary Header Data -->
-        <h1 id="p-title" class="product-title skeleton"></h1>
-        
-        <div class="product-card-stars">
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <span>(24 Reviews)</span>
+        <div class="product-card-stars mb-16" style="opacity: 0.8;">
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span class="review-count">(24 Reviews)</span>
         </div>
 
-        <div id="p-price" class="product-price skeleton"></div>
+        <div id="p-price" class="product-price skeleton" style="height: 30px; width: 120px;"></div>
         
         <p class="product-desc">Experience the perfect blend of modesty and luxury. This meticulously crafted garment offers ultimate comfort without compromising on elegance, making it an essential addition to your daily routine.</p>
 
-        <!-- Product Selectors -->
+        <!-- Size -->
         <div class="selector-wrap">
           <div class="selector-top">
             <span>Size</span>
-            <button class="size-guide-link" id="size-guide-trigger" type="button">Size Guide</button>
+            <span class="size-guide-link" id="size-guide-trigger">Size Guide</span>
           </div>
           <div class="size-opts" id="p-sizes">
-            <button class="size-opt active">S</button>
-            <button class="size-opt">M</button>
-            <button class="size-opt">L</button>
-            <button class="size-opt">XL</button>
+            <div class="size-opt active">S</div>
+            <div class="size-opt">M</div>
+            <div class="size-opt">L</div>
+            <div class="size-opt">XL</div>
           </div>
         </div>
 
-        <!-- Add Actions: Scales gracefully, forces wrapping -->
+        <!-- Actions -->
         <div class="actions" id="main-actions">
           <div class="qty-wrap">
-            <button class="qty-btn" id="qty-minus" aria-label="Decrease">&minus;</button>
-            <input type="text" class="qty-input" id="qty-val" value="1" readonly aria-label="Quantity">
-            <button class="qty-btn" id="qty-plus" aria-label="Increase">+</button>
+            <button class="qty-btn" id="qty-minus">−</button>
+            <input type="text" class="qty-input" id="qty-val" value="1" readonly>
+            <button class="qty-btn" id="qty-plus">+</button>
           </div>
           <button class="btn btn-primary add-to-cart" id="add-btn">Add to Cart</button>
-          <button class="wishlist-btn" id="wish-btn" aria-label="Add to Wishlist">
+          <button class="wishlist-btn p-wishlist-btn" id="wish-btn" aria-label="Add to Wishlist">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-            <span class="wish-text">Add to Wishlist</span>
           </button>
         </div>
 
-        <!-- Informational Accordion -->
+        <!-- Sticky Mobile Cart — dark themed, slides up when Add to Cart scrolls off screen -->
+        <div id="sticky-cart" style="
+          position: fixed;
+          bottom: 0; left: 0; right: 0;
+          background: var(--bg-deep);
+          border-top: 1px solid var(--border-gold);
+          padding: 14px 20px;
+          padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+          box-shadow: 0 -4px 24px rgba(0,0,0,0.35);
+          z-index: 2000;
+          transform: translateY(100%);
+          transition: transform var(--t-mid) var(--ease);
+          display: flex;
+          gap: 14px;
+          align-items: center;
+        ">
+          <button class="btn btn-primary add-to-cart" id="sticky-add-btn" style="flex:1; min-height: 52px; font-size: 1rem;">Add to Cart</button>
+        </div>
+
+        <!-- Accordion -->
         <div class="accordion">
-          
           <div class="accordion-item active">
-            <button class="accordion-header" type="button" aria-expanded="true">
+            <button class="accordion-header">
               <span>Product Details</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="accordion-content" style="max-height: 500px;">
+            <div class="accordion-content">
               <div class="accordion-inner">
                 Soft, breathable fabric sourced meticulously to ensure longevity and comfort.
                 <ul>
@@ -481,9 +393,8 @@
               </div>
             </div>
           </div>
-          
           <div class="accordion-item">
-            <button class="accordion-header" type="button" aria-expanded="false">
+            <button class="accordion-header">
               <span>Shipping & Returns</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
@@ -493,16 +404,10 @@
               </div>
             </div>
           </div>
-
         </div>
-      </section>
-    </div>
 
-    <!-- Sticky Mobile CTA element -->
-    <div id="sticky-cart">
-      <button class="btn btn-primary add-to-cart" id="sticky-add-btn" style="flex:1; min-height: 56px; font-size: 1.05rem; border-radius: 50px;">Add to Cart</button>
+      </div>
     </div>
-    
   </main>
 
   <!-- Size Guide Modal -->
@@ -747,31 +652,12 @@
 
       // Wishlist
       const wishBtn = document.getElementById('wish-btn');
-      const wishText = wishBtn.querySelector('.wish-text');
       wishBtn.dataset.wishlistBtn = product.id;
       wishBtn.dataset.name = product.name;
       wishBtn.classList.toggle('active', window.Wishlist.has(product.id));
-      
-      let wishTimer;
       wishBtn.addEventListener('click', () => {
-        const isNowAdded = window.Wishlist.toggle(product.id, product.name);
-        wishBtn.classList.toggle('active', isNowAdded);
-        
-        // Visual feedback interaction
-        wishBtn.style.transform = 'scale(0.92)';
-        wishBtn.style.opacity = '0.8';
-        if (wishText) {
-          wishText.textContent = isNowAdded ? 'Added to Wishlist!' : 'Removed';
-        }
-        
-        clearTimeout(wishTimer);
-        wishTimer = setTimeout(() => {
-          wishBtn.style.transform = '';
-          wishBtn.style.opacity = '';
-          if (wishText) {
-            wishText.textContent = 'Add to Wishlist';
-          }
-        }, 1200);
+        window.Wishlist.toggle(product.id, product.name);
+        wishBtn.classList.toggle('active', window.Wishlist.has(product.id));
       });
 
       // Accordion
