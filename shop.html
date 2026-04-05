@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shop | Balagha</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.0">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <style>
     .shop-layout {
@@ -126,6 +126,11 @@
 
     @media (max-width: 768px) {
       .shop-layout { flex-direction: column; gap: 24px; padding-top: 24px; }
+      .shop-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
       .shop-sidebar {
         position: fixed;
         inset: 0;

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us | Balagha</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.0">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <style>
     .contact-grid {
@@ -80,19 +80,19 @@
       color: var(--mocha);
     }
     .form-input {
-      padding: 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      background: var(--bg-mid);
-      font-size: 1rem;
+      padding: 14px 16px;
+      border: 1px solid rgba(242, 237, 228, 0.15);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 0.95rem;
       outline: none;
       transition: all var(--t-fast);
       color: var(--text-cream);
     }
-    .form-input::placeholder { color: var(--mocha-mid); }
+    .form-input::placeholder { color: rgba(242, 237, 228, 0.4); }
     .form-input:focus {
       border-color: var(--gold);
-      background: var(--bg-light);
+      background: rgba(255, 255, 255, 0.06);
       box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
     }
     textarea.form-input { resize: vertical; min-height: 150px; }
