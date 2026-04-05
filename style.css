@@ -136,7 +136,6 @@ p {
   margin: 0 auto;
   line-height: 1.8;
 }
-.text-center { text-align: center; }
 
 /* ── Buttons ── */
 .btn {
@@ -980,7 +979,7 @@ p {
 .cat-cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: var(--space-6);
   margin-top: 40px;
 }
 .cat-card {
@@ -1430,6 +1429,7 @@ p {
   .about-grid.reverse > div:last-child { order: 2; }
   .pillars-grid { grid-template-columns: 1fr; gap: var(--space-5); }
   .about-img { aspect-ratio: 16/10; }
+  .cat-cards { grid-template-columns: 1fr; }
   .cat-card { aspect-ratio: 16/11; }
 }
 
